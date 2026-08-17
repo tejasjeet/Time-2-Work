@@ -1,0 +1,33 @@
+.flutter-run.log
+.flutter-dev-uri.txt
+
+# Secrets & local env
+.env
+.env.*
+!.env.example
+backend/.env
+backend/uploads/
+
+# Node
+backend/node_modules/
+admin/node_modules/
+
+# Flutter / Dart
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+mobile/build/
+mobile/.pub-cache/
+mobile/.pub/
+
+# IDE & OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Firebase keys
+**/firebase-service-account.json
+
