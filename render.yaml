@@ -1,25 +1,23 @@
 # Render Blueprint — deploy Time2Work API (free tier)
-# Docs: https://render.com/docs/blueprint-spec
+# Repo: https://github.com/tejasjeet/Time-2-Work
 #
-# 1. Push this repo to GitHub
-# 2. Render Dashboard → New → Blueprint → connect repo
-# 3. Set MONGO_URI when prompted (MongoDB Atlas connection string)
-# 4. After deploy, seed Atlas once from your PC (see scripts/seed-cloud.ps1)
+# In Render dashboard set this env var when prompted:
+#   MONGO_URI = mongodb+srv://...@time2work.o6cqvjq.mongodb.net/time2work
+# GOOGLE_MAPS_API_KEY is optional (leave empty — OpenStreetMap fallback works).
 
 services:
   - type: web
     name: time2work-api
-    runtime: docker
+    runtime: node
     plan: free
     region: singapore
-    dockerfilePath: ./backend/Dockerfile
-    dockerContext: ./backend
+    rootDir: backend
+    buildCommand: npm install --omit=dev
+    startCommand: node src/server.js
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: "4000"
       - key: MOCK_OTP
         value: "true"
       - key: PAYMENTS_MODE
@@ -36,6 +34,3 @@ services:
         generateValue: true
       - key: JWT_REFRESH_SECRET
         generateValue: true
-      # Optional — Google Places (Nominatim works without this)
-      - key: GOOGLE_MAPS_API_KEY
-        sync: false

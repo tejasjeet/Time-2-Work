@@ -11,14 +11,15 @@ async function main() {
   const uploadDir = path.resolve(process.cwd(), env.uploadDir);
   if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
-  await connectDb();
   const app = createApp();
   const server = http.createServer(app);
   initSockets(server);
 
-  server.listen(env.port, () => {
-    console.log(`Time2Work API listening on :${env.port}`);
+  server.listen(env.port, '0.0.0.0', () => {
+    console.log(`Time2Work API listening on 0.0.0.0:${env.port}`);
   });
+
+  await connectDb();
 }
 
 main().catch((err) => {

@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const mongoose = require('mongoose');
 const { env } = require('./config/env');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const { handleRazorpayWebhook } = require('./routes/payments');
@@ -60,7 +61,13 @@ function createApp() {
   app.use('/uploads', express.static(uploadPath));
 
   app.get('/health', (req, res) => {
-    res.json({ ok: true, service: 'time2work-api', env: env.nodeEnv });
+    const dbReady = mongoose.connection.readyState === 1;
+    res.json({
+      ok: dbReady,
+      service: 'time2work-api',
+      env: env.nodeEnv,
+      db: dbReady ? 'connected' : 'connecting',
+    });
   });
 
   app.use('/api/auth', authRoutes);
