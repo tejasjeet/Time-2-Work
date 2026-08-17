@@ -60,13 +60,26 @@ function createApp() {
   const uploadPath = path.resolve(process.cwd(), env.uploadDir);
   app.use('/uploads', express.static(uploadPath));
 
+  app.get('/', (req, res) => {
+    res.json({
+      service: 'time2work-api',
+      health: '/health',
+      api: '/api',
+    });
+  });
+
   app.get('/health', (req, res) => {
     const dbReady = mongoose.connection.readyState === 1;
+    const mongoConfigured = Boolean(process.env.MONGO_URI);
     res.json({
       ok: dbReady,
       service: 'time2work-api',
       env: env.nodeEnv,
       db: dbReady ? 'connected' : 'connecting',
+      mongoConfigured,
+      hint: !mongoConfigured
+        ? 'Set MONGO_URI in Render Environment to your Atlas connection string.'
+        : undefined,
     });
   });
 

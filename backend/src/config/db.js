@@ -6,6 +6,10 @@ function sleep(ms) {
 }
 
 async function connectDb() {
+  if (!env.mongoUri) {
+    throw new Error('MONGO_URI is not set. Add it in Render → Environment.');
+  }
+
   mongoose.set('strictQuery', true);
 
   const options = {

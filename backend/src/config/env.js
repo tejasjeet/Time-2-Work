@@ -11,7 +11,9 @@ const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
   isProd,
   port: Number(process.env.PORT) || 4000,
-  mongoUri: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/time2work',
+  mongoUri:
+    process.env.MONGO_URI ||
+    (isProd ? '' : 'mongodb://127.0.0.1:27017/time2work'),
   corsOrigin: (process.env.CORS_ORIGIN || 'http://localhost:3000,http://localhost:4000')
     .split(',')
     .map((s) => s.trim())
